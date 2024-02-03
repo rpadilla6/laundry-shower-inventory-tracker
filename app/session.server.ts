@@ -1,10 +1,11 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
-import invariant from "tiny-invariant";
+
 import { getProfileById } from "./models/user.server";
+import invariant from "tiny-invariant";
 
 invariant(
   process.env.SESSION_SECRET,
-  "SESSION_SECRET must be set in your environment variables."
+  "SESSION_SECRET must be set in your environment variables.",
 );
 
 export const sessionStorage = createCookieSessionStorage({
@@ -50,7 +51,7 @@ export async function getUser(request: Request) {
  */
 export async function requireUserId(
   request: Request,
-  redirectTo: string = new URL(request.url).pathname
+  redirectTo: string = new URL(request.url).pathname,
 ) {
   const userId = await getUserId(request);
   if (!userId) {
@@ -88,7 +89,7 @@ export async function createUserSession({
     headers: {
       "Set-Cookie": await sessionStorage.commitSession(session, {
         maxAge: remember
-          ? 60 * 60 * 24 * 7 // 7 days
+          ? 60 * 60 * 24 * 31 // 1 month session rememberance
           : undefined,
       }),
     },
