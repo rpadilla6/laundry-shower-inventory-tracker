@@ -5,6 +5,7 @@ node_modules
 /.netlify
 
 /.env
+/.env.*
 
 /app/styles/tailwind.css
 
