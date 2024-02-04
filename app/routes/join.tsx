@@ -1,19 +1,24 @@
+import * as React from "react";
+
 import type {
   ActionFunction,
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
-import { createUserSession, getUserId } from "~/session.server";
 import { createUser, getProfileByEmail } from "~/models/user.server";
+import { createUserSession, getUserId } from "~/session.server";
+import { json, redirect } from "@remix-run/node";
+
+import { AuthError } from "@supabase/gotrue-js";
 import { validateEmail } from "~/utils";
-import * as React from "react";
 
 export const meta: MetaFunction = () => {
-  return [{
-    title: "Sign Up",
-  }];
+  return [
+    {
+      title: "Sign Up",
+    },
+  ];
 };
 
 interface ActionData {
@@ -39,7 +44,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (!validateEmail(email)) {
     return json<ActionData>(
       { errors: { email: "Email is invalid." } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -47,7 +52,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (typeof password !== "string") {
     return json(
       { errors: { password: "Valid password is required." } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -55,7 +60,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (password.length < 6) {
     return json<ActionData>(
       { errors: { password: "Password is too short." } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -65,18 +70,33 @@ export const action: ActionFunction = async ({ request }) => {
   if (existingUser) {
     return json<ActionData>(
       { errors: { email: "A user already exists with this email." } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
-  const user = await createUser(email, password);
+  // Attempt to create the user
+  try {
+    const user = await createUser(email, password);
 
-  return createUserSession({
-    request,
-    userId: user?.id,
-    remember: false,
-    redirectTo: typeof redirectTo === "string" ? redirectTo : "/",
-  });
+    return createUserSession({
+      request,
+      userId: user!.id,
+      remember: false,
+      redirectTo: typeof redirectTo === "string" ? redirectTo : "/",
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return json<ActionData>(
+        { errors: { email: error.message } },
+        { status: 400 },
+      );
+    } else {
+      return json<ActionData>(
+        { errors: { email: "An error occurred." } },
+        { status: 400 },
+      );
+    }
+  }
 };
 
 export default function Join() {
