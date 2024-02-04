@@ -20,10 +20,13 @@ invariant(
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 export async function createUser(email: string, password: string) {
-  const { data } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
   });
+
+  if(error) 
+    throw error;
 
   // get the user profile after created
   const profile = await getProfileByEmail(data.user?.email);
@@ -38,7 +41,8 @@ export async function getProfileById(id: string) {
     .eq("id", id)
     .single();
 
-  if (error) return null;
+  if (error)
+    throw error;
   if (data) return { id: data.id, email: data.email };
 }
 
