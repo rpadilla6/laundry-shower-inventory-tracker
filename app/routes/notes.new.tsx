@@ -1,5 +1,6 @@
-import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
+
+import type { ActionFunction } from "@remix-run/node";
 import { Form } from "@remix-run/react";
 import { createNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
@@ -20,7 +21,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const note = await createNote({ title, body, userId });
-  return redirect(`/notes/${note.id}`);
+  return redirect(`/notes/${note?.id}`);
 };
 
 export default function NewNotePage() {
