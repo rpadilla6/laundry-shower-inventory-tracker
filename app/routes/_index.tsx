@@ -11,21 +11,17 @@ export default function Index() {
             <div className="absolute inset-0">
               <img
                 className="h-full w-full object-cover"
-                src="https://user-images.githubusercontent.com/8431042/161311608-f5d43ab2-85b4-40c5-9dea-065985e5adf5.jpeg"
+                src="https://images.squarespace-cdn.com/content/v1/5bfc306ac258b431923c4b3b/1698797633285-M2N840JFY35DGFDOIMTD/_MG_2935%252B%2525281%252529.jpg?format=2500w"
                 alt="BTS playing on stage with the group leaving in action poses"
               />
               <div className="absolute inset-0 bg-[color:rgba(139,92,246,0.5)] mix-blend-multiply" />
             </div>
             <div className="lg:pb-18 relative px-4 pt-16 pb-8 sm:px-6 sm:pt-24 sm:pb-14 lg:px-8 lg:pt-32">
               <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
-                <span className="block uppercase text-violet-500 drop-shadow-md">
-                  K-Pop Stack
+                <span className="block uppercase text-violet-200 drop-shadow-md">
+                  Laundry Shower Resource Tracker
                 </span>
               </h1>
-              <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
-                Check the README.md file for instructions on how to get this
-                project deployed.
-              </p>
               <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                 {user ? (
                   <Link
