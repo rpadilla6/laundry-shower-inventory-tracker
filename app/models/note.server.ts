@@ -50,7 +50,7 @@ export async function deleteNote({
 export async function getNote({
   id,
   userId,
-}: Pick<Note, "id"> & { userId: User["id"] }) {
+}: Pick<Note, "id"> & { userId: User["id"] }): Promise<Partial<Note> | null> {
   const { data, error } = await supabase
     .from("notes")
     .select("*")
@@ -59,12 +59,7 @@ export async function getNote({
     .single();
 
   if (!error) {
-    return {
-      userId: data.profile_id,
-      id: data.id,
-      title: data.title,
-      body: data.body,
-    };
+    return { ...data, body: data.body || ""};
   }
 
   return null;

@@ -1,10 +1,11 @@
 import type { ActionFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
-import type { Note } from "~/models/note.server";
 import { deleteNote, getNote } from "~/models/note.server";
-import { requireUserId } from "~/session.server";
+import { json, redirect } from "@remix-run/node";
+
+import type { Note } from "~/models/note.server";
 import invariant from "tiny-invariant";
+import { requireUserId } from "~/session.server";
 
 type LoaderData = {
   note: Note;
