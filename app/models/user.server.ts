@@ -1,7 +1,8 @@
+import { Database } from "../../supabase/generated";
 import { createClient } from "@supabase/supabase-js";
 import invariant from "tiny-invariant";
 
-export type User = { id: string; email: string };
+export type User = Database['public']['Tables']['profiles']['Row'];
 
 // Abstract this away
 const supabaseUrl = process.env.SUPABASE_URL;
