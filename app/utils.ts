@@ -2,6 +2,7 @@ import { DistributionRecord } from "./models/distribution_record";
 import type { User } from "./models/user.server";
 import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
+import { z } from "zod";
 
 export function useMatchesData(id: string): any {
   const matchingRoutes = useMatches();
@@ -53,3 +54,20 @@ export function getEmojiStringForEntry(entry: DistributionRecord) {
     emoji.push("⛺️");
   return emoji.join(" ");
 }
+
+export const entrySchema = z.object({
+    first_name: z.string().min(2, "First name must be at least 2 characters"),
+    last_name: z.string().min(1, "Last name or initial is required"),
+    backpack: z.boolean().nullish(),
+    blanket: z.boolean().nullish(),
+    duffel_bag: z.boolean().nullish(),
+    tarp: z.boolean().nullish(),
+    sleeping_bag: z.boolean().nullish(),
+    profile_id: z.string({ required_error: "User profile is required" }),
+    distribution_date: z
+      .string()
+      .refine(
+        (value) => !isNaN(Date.parse(value)),
+        "Invalid distribution date",
+      ),
+  });
