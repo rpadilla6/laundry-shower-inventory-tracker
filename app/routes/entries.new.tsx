@@ -1,10 +1,10 @@
 import { ActionFunction, json } from "@remix-run/node";
+import { Form, useActionData } from "@remix-run/react";
+import { ZodIssue, z } from "zod";
 
-import { Form } from "@remix-run/react";
 import { createDistributionRecord } from "../models/distribution_record";
 import { redirect } from "react-router";
 import { requireUserId } from "../session.server";
-import { z } from "zod";
 
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
@@ -41,18 +41,17 @@ export const action: ActionFunction = async ({ request }) => {
       tarp: newEntry.tarp ?? null,
       sleeping_bag: newEntry.sleeping_bag ?? null,
     });
-    console.log({ entry });
 
     return redirect(`/entries`);
   } catch (error) {
-    console.log(error);
     if (error instanceof z.ZodError) {
-      return json({ errors: error?.issues }, { status: 400 });
+      return json({ errors: error?.issues });
     }
   }
 };
 
 export default function NewEntryPage() {
+  const actionData = useActionData<{ errors?: ZodIssue[] }>();
   return (
     <Form
       method="post"
@@ -78,11 +77,24 @@ export default function NewEntryPage() {
             className="block w-full rounded-md border-0 pl-2 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
             placeholder="Henry"
             aria-describedby="first_name-description"
+            aria-errormessage="first_name-error"
           />
         </div>
-        <p className="mt-2 text-sm text-slate-500" id="first_name-description">
-          Guest's first name
-        </p>
+        {actionData?.errors?.some((error) => error.path[0] === "first_name") ? (
+          <p className="mt-2 text-sm text-red-400" id="first_name-error">
+            {actionData?.errors
+              ?.filter((error) => error.path[0] === "first_name")
+              .map((error) => error.message)
+              .join(", ")}
+          </p>
+        ) : (
+          <p
+            className="mt-2 text-sm text-slate-500"
+            id="first_name-description"
+          >
+            Guest's first name
+          </p>
+        )}
       </div>
       <div>
         <label
@@ -99,11 +111,21 @@ export default function NewEntryPage() {
             className="block w-full rounded-md border-0 pl-2 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
             placeholder="Dubon"
             aria-describedby="last_name-description"
+            aria-errormessage="last_name-error"
           />
         </div>
-        <p className="mt-2 text-sm text-slate-500" id="last_name-description">
-          Guest's last name
-        </p>
+        {actionData?.errors?.some((error) => error.path[0] === "last_name") ? (
+          <p className="mt-2 text-sm text-red-400" id="last_name-error">
+            {actionData?.errors
+              ?.filter((error) => error.path[0] === "last_name")
+              .map((error) => error.message)
+              .join(", ")}
+          </p>
+        ) : (
+          <p className="mt-2 text-sm text-slate-500" id="last_name-description">
+            Guest's last name
+          </p>
+        )}
       </div>
       {/* Create a horizontally scrolling div to hold checkbox items that are surrounded with labels, meaning they behave like buttons */}
       <div className="relative">
