@@ -1,4 +1,5 @@
 import { DistributionRecord } from "../models/distribution_record";
+import { Link } from "@remix-run/react";
 import { getEmojiStringForEntry } from "../utils";
 
 export default function Table({ entries }: { entries: DistributionRecord[] }) {
@@ -33,7 +34,7 @@ export default function Table({ entries }: { entries: DistributionRecord[] }) {
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
             {entries.map((entry) => (
-              <tr key={entry.first_name + entry.last_name}>
+              <tr key={entry.id}>
                 <td className="py-4 pl-4 pr-3 text-sm font-medium text-slate-900 sm:w-auto sm:max-w-none sm:pl-0">
                   {`${entry.first_name} ${entry.last_name}`}
                   <dl className="font-normal lg:hidden">
@@ -47,15 +48,21 @@ export default function Table({ entries }: { entries: DistributionRecord[] }) {
                   {getEmojiStringForEntry(entry)}
                 </td>
                 <td className="px-3 py-4 text-sm text-slate-500 table-cell">
-                  {new Date(entry.distribution_date).toLocaleDateString()}
+                  {new Date(entry.distribution_date).toLocaleDateString(
+                    "en-US",
+                    { timeZone: "UTC" },
+                  )}
                 </td>
                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                  <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                  <Link
+                    to={`/entries/${entry.id}`}
+                    className="text-indigo-600 hover:text-indigo-900"
+                  >
                     Edit
                     <span className="sr-only">
                       , {`${entry.first_name} ${entry.last_name}`}
                     </span>
-                  </a>
+                  </Link>
                 </td>
               </tr>
             ))}
