@@ -45,10 +45,21 @@ export async function getLatestDistributionRecords() {
   return data;
 }
 
+// Given an entryId, get the distribution record from supabase.
+export async function getDistributionRecordById(id: string) {
+  const { data } = await supabase
+    .from("items_distributed")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  return data;
+}
+
 
 // Edit a distribution record in supabase.
 export async function editDistributionRecord(
-  record: DistributionRecord
+  record: Omit<DistributionRecord, 'created_at' | 'updated_at'>
 ) {
   const { data, error } = await supabase
     .from("items_distributed")
