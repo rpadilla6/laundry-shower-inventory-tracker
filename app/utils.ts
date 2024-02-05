@@ -1,6 +1,7 @@
-import { useMemo } from "react";
-import { useMatches } from "@remix-run/react";
+import { DistributionRecord } from "./models/distribution_record";
 import type { User } from "./models/user.server";
+import { useMatches } from "@remix-run/react";
+import { useMemo } from "react";
 
 export function useMatchesData(id: string): any {
   const matchingRoutes = useMatches();
@@ -36,4 +37,19 @@ export function useUser() {
 
 export function validateEmail(email: unknown): email is string {
   return typeof email === "string" && email.length > 3 && email.includes("@");
+}
+
+export function getEmojiStringForEntry(entry: DistributionRecord) {
+  const emoji:string[] = [];
+  if (entry.backpack)
+    emoji.push("🎒");
+  if (entry.duffel_bag)
+    emoji.push("👜");
+  if (entry.blanket)
+    emoji.push("🇶🇦");
+  if (entry.sleeping_bag)
+    emoji.push("🛌");
+  if (entry.tarp)
+    emoji.push("⛺️");
+  return emoji.join(" ");
 }
