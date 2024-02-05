@@ -27,8 +27,13 @@ export const action: ActionFunction = async ({ request }) => {
     duffel_bag: z.boolean().nullish(),
     tarp: z.boolean().nullish(),
     sleeping_bag: z.boolean().nullish(),
-    profile_id: z.string(),
-    distribution_date: z.string(),
+    profile_id: z.string({ required_error: "User profile is required" }),
+    distribution_date: z
+      .string()
+      .refine(
+        (value) => !isNaN(Date.parse(value)),
+        "Invalid distribution date",
+      ),
   });
 
   try {
@@ -240,6 +245,21 @@ export default function NewEntryPage() {
           What day did they request these items? (autofilled to current date)
         </p>
       </div>
+      <p>
+        {actionData?.errors
+          ?.filter(
+            (error) =>
+              error.path[0] !== "first_name" && error.path[0] !== "last_name",
+          )
+          .map((error) => (
+            <span
+              key={error.path.join("-")}
+              className="mt-2 text-sm text-red-400"
+            >
+              {error.message}
+            </span>
+          ))}
+      </p>
       <button
         type="submit"
         className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
