@@ -6,6 +6,7 @@ import { LoaderFunctionArgs, json } from "@remix-run/node";
 
 import { Header } from "../components/Header";
 import { Outlet } from "react-router";
+import Table from "../components/Table";
 import { useLoaderData } from "@remix-run/react";
 
 type LoaderData = {
@@ -19,7 +20,6 @@ export async function loader({}: LoaderFunctionArgs) {
 
 export default function EntriesPage() {
   const data = useLoaderData<typeof loader>() as LoaderData;
-  console.log(data);
   return (
     <div className="flex h-full min-h-screen flex-col">
       <Header />
@@ -31,16 +31,7 @@ export default function EntriesPage() {
           <h2 className="text-2xl font-bold text-center text-slate-800">
             Latest Entries
           </h2>
-          <ul>
-            {data.entries.map((entry) => (
-              <li key={entry.id}>
-                <p>
-                  {`${entry.first_name} ${entry.last_name}`} -{" "}
-                  {entry.distribution_date}
-                </p>
-              </li>
-            ))}
-          </ul>
+          <Table entries={data.entries} />
         </div>
       </main>
     </div>
