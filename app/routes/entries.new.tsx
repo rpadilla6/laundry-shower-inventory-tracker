@@ -4,6 +4,7 @@ import { ZodIssue, z } from "zod";
 
 import { AdvancedOptionsCollapsible } from "../components/AdvancedOptionsCollapsible";
 import { createDistributionRecord } from "../models/distribution_record";
+import { getLocalISOString } from "../utils";
 import { redirect } from "react-router";
 import { requireUserId } from "../session.server";
 
@@ -235,7 +236,7 @@ export default function NewEntryPage() {
             name="distribution_date"
             id="distribution_date"
             className="block w-full rounded-md border-0 pl-2 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-            defaultValue={new Date().toISOString().split("T")[0]}
+            defaultValue={getLocalISOString(new Date()).split("T")[0]}
             aria-describedby="distribution_date-description"
           />
         </div>
