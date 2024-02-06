@@ -2,6 +2,7 @@ import { ActionFunction, json } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { ZodIssue, z } from "zod";
 
+import { AdvancedOptionsCollapsible } from "../components/AdvancedOptionsCollapsible";
 import { createDistributionRecord } from "../models/distribution_record";
 import { redirect } from "react-router";
 import { requireUserId } from "../session.server";
@@ -221,7 +222,7 @@ export default function NewEntryPage() {
         </div>
         <div className="absolute pointer-events-none inset-y-0 right-0 h-full w-5 bg-gradient-to-r from-transparent to-white" />
       </div>
-      <div>
+      <AdvancedOptionsCollapsible>
         <label
           htmlFor="distribution_date"
           className="block text-base font-medium leading-6 text-slate-900"
@@ -244,7 +245,7 @@ export default function NewEntryPage() {
         >
           What day did they request these items? (autofilled to current date)
         </p>
-      </div>
+      </AdvancedOptionsCollapsible>
       <p>
         {actionData?.errors
           ?.filter(
