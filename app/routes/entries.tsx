@@ -27,7 +27,10 @@ export default function EntriesPage() {
         <div className="w-full p-6">
           <Outlet />
         </div>
-        <div className="flex-1 p-6 border-t border-t-slate-100">
+        <div
+          className="flex-1 p-6 border-t border-t-slate-100 bg-white"
+          style={{ viewTransitionName: "table" }}
+        >
           <h2 className="text-2xl font-bold text-center text-slate-800">
             Latest Entries
           </h2>
