@@ -7,7 +7,10 @@ export const Header = () => {
   const location = useLocation();
 
   return (
-    <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
+    <header
+      className="flex items-center justify-between bg-slate-800 p-4 text-white z-10"
+      style={{ viewTransitionName: "header" }}
+    >
       {location.pathname.startsWith("/notes") ? (
         <h1 className="text-xl font-bold">
           <Link to="/entries">Recording</Link>

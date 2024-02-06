@@ -56,6 +56,7 @@ export default function Table({ entries }: { entries: DistributionRecord[] }) {
                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                   <Link
                     to={`/entries/${entry.id}`}
+                    unstable_viewTransition
                     className="text-indigo-600 hover:text-indigo-900"
                   >
                     Edit

@@ -1,5 +1,5 @@
 import { ActionFunction, json } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, Link, useActionData } from "@remix-run/react";
 import { ZodIssue, z } from "zod";
 
 import { AdvancedOptionsCollapsible } from "../components/AdvancedOptionsCollapsible";
@@ -62,11 +62,14 @@ export default function NewEntryPage() {
   return (
     <Form
       method="post"
+      unstable_viewTransition
       style={{
         display: "flex",
         flexDirection: "column",
         gap: 8,
         width: "100%",
+        backgroundColor: "white",
+        viewTransitionName: "entry",
       }}
     >
       <div>
@@ -262,12 +265,21 @@ export default function NewEntryPage() {
             </span>
           ))}
       </p>
-      <button
-        type="submit"
-        className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
-      >
-        Save
-      </button>
+      <div className="flex justify-between space-x-2">
+        <Link
+          to="/entries"
+          unstable_viewTransition
+          className="flex-1 rounded bg-slate-200 text-center py-2 px-4 text-slate-700 hover:bg-slate-400 focus:bg-slate-300"
+        >
+          Cancel
+        </Link>
+        <button
+          type="submit"
+          className="flex-1 rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+        >
+          Save
+        </button>
+      </div>
     </Form>
   );
 }
