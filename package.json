@@ -14,7 +14,7 @@
     "dev:remix": "remix dev",
     "e2e-test": "cypress run",
     "format": "prettier --write .",
-    "generate:css": "npx tailwindcss -o ./app/styles/tailwind.css",
+    "generate:css": "npx tailwindcss -i ./app/styles/main.css -o ./app/styles/tailwind.css",
     "generate:db-types": "supabase gen types typescript --local > supabase/generated.ts",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "ntl:ci": "netlify dev",
