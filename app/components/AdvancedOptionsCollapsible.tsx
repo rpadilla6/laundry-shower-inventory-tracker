@@ -26,7 +26,9 @@ export function AdvancedOptionsCollapsible({
             </button>
           </Collapsible.Trigger>
         </div>
-        <Collapsible.Content>{children}</Collapsible.Content>
+        <Collapsible.Content forceMount hidden={!open}>
+          {children}
+        </Collapsible.Content>
       </div>
     </Collapsible.Root>
   );
