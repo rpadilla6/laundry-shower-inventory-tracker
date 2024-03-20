@@ -4,7 +4,13 @@ import {
   editDistributionRecord,
   getDistributionRecordById,
 } from "../models/distribution_record";
-import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 import { ZodIssue, z } from "zod";
 
 import { AdvancedOptionsCollapsible } from "../components/AdvancedOptionsCollapsible";
@@ -44,7 +50,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   try {
     const newEntry = entrySchema.parse(cleanedValues);
-    const entry = await editDistributionRecord({
+    await editDistributionRecord({
       ...newEntry,
       id: params.entryId!,
       backpack: newEntry.backpack ?? null,
@@ -65,6 +71,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function EntryEditPage() {
   const actionData = useActionData<{ errors?: ZodIssue[] }>();
   const loaderData = useLoaderData<typeof loader>() as LoaderData;
+  const navigation = useNavigation();
   return (
     <Form
       method="post"
@@ -150,7 +157,7 @@ export default function EntryEditPage() {
         <h4 className="block text-base font-medium leading-6 text-slate-900">
           Requested Items
         </h4>
-        <div className="flex mt-2 flex-row space-x-2 overflow-x-auto text-3xl">
+        <div className="flex flex-row mt-2 space-x-2 overflow-x-auto text-3xl">
           <label
             htmlFor="backpack"
             className="flex space-x-2 px-2 py-1 justify-center items-center rounded-md bg-slate-200  has-[:checked]:bg-green-300"
@@ -160,7 +167,7 @@ export default function EntryEditPage() {
               type="checkbox"
               name="backpack"
               id="backpack"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:bg-green-700 focus:checked:bg-green-700 focus:checked:ring-green-700"
+              className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-600 checked:bg-green-700 focus:checked:bg-green-700 focus:checked:ring-green-700"
               defaultChecked={!!loaderData.entry.backpack}
               aria-describedby="backpack-description"
             />
@@ -177,7 +184,7 @@ export default function EntryEditPage() {
               type="checkbox"
               name="duffel_bag"
               id="duffel_bag"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:bg-green-700 focus:checked:bg-green-700 focus:checked:ring-green-700"
+              className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-600 checked:bg-green-700 focus:checked:bg-green-700 focus:checked:ring-green-700"
               aria-describedby="duffel_bag-description"
               defaultChecked={!!loaderData.entry.duffel_bag}
             />
@@ -194,7 +201,7 @@ export default function EntryEditPage() {
               type="checkbox"
               name="blanket"
               id="blanket"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:bg-green-700 focus:checked:bg-green-700 focus:checked:ring-green-700"
+              className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-600 checked:bg-green-700 focus:checked:bg-green-700 focus:checked:ring-green-700"
               aria-describedby="blanket-description"
               defaultChecked={!!loaderData.entry.blanket}
             />
@@ -211,7 +218,7 @@ export default function EntryEditPage() {
               type="checkbox"
               name="sleeping_bag"
               id="sleeping_bag"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:bg-green-700 focus:checked:bg-green-700 focus:checked:ring-green-700"
+              className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-600 checked:bg-green-700 focus:checked:bg-green-700 focus:checked:ring-green-700"
               aria-describedby="sleeping_bag-description"
               defaultChecked={!!loaderData.entry.sleeping_bag}
             />
@@ -228,7 +235,7 @@ export default function EntryEditPage() {
               type="checkbox"
               name="tarp"
               id="tarp"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:bg-green-700 focus:checked:bg-green-700 focus:checked:ring-green-700"
+              className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-600 checked:bg-green-700 focus:checked:bg-green-700 focus:checked:ring-green-700"
               aria-describedby="tarp-description"
               defaultChecked={!!loaderData.entry.tarp}
             />
@@ -237,7 +244,7 @@ export default function EntryEditPage() {
             </p>
           </label>
         </div>
-        <div className="absolute pointer-events-none inset-y-0 right-0 h-full w-5 bg-gradient-to-r from-transparent to-white" />
+        <div className="absolute inset-y-0 right-0 w-5 h-full pointer-events-none bg-gradient-to-r from-transparent to-white" />
       </div>
       <AdvancedOptionsCollapsible>
         <label
@@ -282,15 +289,16 @@ export default function EntryEditPage() {
         <Link
           to="/entries"
           unstable_viewTransition
-          className="flex-1 rounded bg-slate-200 text-center py-2 px-4 text-slate-700 hover:bg-slate-400 focus:bg-slate-300"
+          className="flex-1 px-4 py-2 text-center rounded bg-slate-200 text-slate-700 hover:bg-slate-400 focus:bg-slate-300"
         >
           Cancel
         </Link>
         <button
           type="submit"
-          className="flex-1 rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+          className="flex-1 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:bg-blue-400"
+          disabled={navigation.state !== "idle"}
         >
-          Save
+          {navigation.state === "submitting" ? "Saving" : "Save"}
         </button>
       </div>
     </Form>
