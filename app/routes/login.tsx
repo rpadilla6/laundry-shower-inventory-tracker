@@ -67,13 +67,13 @@ export const action: ActionFunction = async ({ request }) => {
     request,
     userId: user.id,
     remember: remember === "on" ? true : false,
-    redirectTo: typeof redirectTo === "string" ? redirectTo : "/notes",
+    redirectTo: typeof redirectTo === "string" ? redirectTo : "/entries",
   });
 };
 
 export default function Login() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") ?? "/notes";
+  const redirectTo = searchParams.get("redirectTo") ?? "/entries";
 
   const actionData = useActionData() as ActionData;
   const emailRef = React.useRef<HTMLInputElement>(null);
@@ -90,8 +90,8 @@ export default function Login() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center">
-      <div className="mx-auto w-full max-w-md px-8">
+    <div className="flex flex-col justify-center min-h-full">
+      <div className="w-full max-w-md px-8 mx-auto">
         <Form method="post" className="space-y-6" noValidate>
           <div>
             <label className="text-sm font-medium" htmlFor="email">
@@ -103,7 +103,7 @@ export default function Login() {
               )}
             </label>
             <input
-              className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+              className="w-full px-2 py-1 text-lg border border-gray-500 rounded"
               autoComplete="email"
               type="email"
               name="email"
@@ -130,14 +130,14 @@ export default function Login() {
               type="password"
               name="password"
               autoComplete=""
-              className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+              className="w-full px-2 py-1 text-lg border border-gray-500 rounded"
               aria-invalid={actionData?.errors?.password ? true : undefined}
               aria-describedby="password-error"
               ref={passwordRef}
             />
           </div>
           <button
-            className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+            className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:bg-blue-400"
             type="submit"
           >
             Log in
@@ -146,19 +146,19 @@ export default function Login() {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 id="remember"
                 name="remember"
                 type="checkbox"
               />
               <label
-                className="ml-2 block text-sm text-gray-900"
+                className="block ml-2 text-sm text-gray-900"
                 htmlFor="remember"
               >
                 Remember me
               </label>
             </div>
-            <div className="text-center text-sm text-gray-500">
+            <div className="text-sm text-center text-gray-500">
               Don't have an account?{" "}
               <Link
                 className="text-blue-500 underline"
