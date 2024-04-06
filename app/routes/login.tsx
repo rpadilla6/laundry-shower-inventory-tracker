@@ -5,15 +5,23 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  useActionData,
+  useNavigation,
+  useSearchParams,
+} from "@remix-run/react";
 import { verifyLogin } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
 import { validateEmail } from "~/utils";
 
 export const meta: MetaFunction = () => {
-  return [{
-    title: "Login",
-  }];
+  return [
+    {
+      title: "Login",
+    },
+  ];
 };
 
 interface ActionData {
@@ -43,14 +51,14 @@ export const action: ActionFunction = async ({ request }) => {
   if (typeof password !== "string") {
     return json(
       { errors: { password: "Valid password is required." } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (password.length < 6) {
     return json(
       { errors: { password: "Password is too short" } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -59,7 +67,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (!user) {
     return json(
       { errors: { email: "Invalid email or password" } },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -78,6 +86,7 @@ export default function Login() {
   const actionData = useActionData() as ActionData;
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
+  const navigation = useNavigation();
 
   React.useEffect(() => {
     if (actionData?.errors?.email) {
@@ -92,7 +101,7 @@ export default function Login() {
   return (
     <div className="flex flex-col justify-center min-h-full">
       <div className="w-full max-w-md px-8 mx-auto">
-        <Form method="post" className="space-y-6" noValidate>
+        <Form method="post" className="space-y-6" noValidate id="login-form">
           <div>
             <label className="text-sm font-medium" htmlFor="email">
               <span className="block text-gray-700">Email Address</span>
@@ -137,8 +146,11 @@ export default function Login() {
             />
           </div>
           <button
-            className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:bg-blue-400"
+            className={`${
+              navigation.state !== "idle" ? "animate-pulse" : ""
+            } w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:bg-blue-400`}
             type="submit"
+            disabled={navigation.state !== "idle"}
           >
             Log in
           </button>
