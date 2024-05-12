@@ -1,18 +1,6 @@
 # Remix K-pop Stack
 
-![k-pop site image](https://res.cloudinary.com/dzkoxrsdj/image/upload/v1648844684/CleanShot_2022-04-01_at_16.23.40_2x_oo3ppe.jpg)
-
-Deployed Site: [kpop-stack.netlify.app](https://kpop-stack.netlify.app)
-
-Learn more about [Remix Stacks](https://remix.run/stacks).
-
-```
-npx create-remix --template netlify-templates/kpop-stack
-```
-
-Click this button to create a new Github repo, new Netlify project and deploy this stack to a [CDN](https://jamstack.org/glossary/cdn/).
-
-[![Deploy to Netlify Button](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/kpop-stack)
+Project for Laundry Shower ministry in Fullerton, CA
 
 ## What's in the stack
 
@@ -128,7 +116,6 @@ You will need these 2 environment variables to connect to your Supabase instance
   <details><summary> See screenshot</summary>
 
   ![supabase url location](https://github.com/ixartz/kpop-stack/assets/5209935/72859c6a-4f71-4d1a-bdc4-6c3ad756838c)
-
 
   </details>
 
