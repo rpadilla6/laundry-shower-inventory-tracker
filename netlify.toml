@@ -11,6 +11,7 @@ TERM = "xterm"
 
 [dev]
 command = "npm run dev"
+framework = "vite"
 targetPort = 3000
 
 [[redirects]]
