@@ -1,6 +1,5 @@
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -11,17 +10,17 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
+import "./styles/tailwind.css";
 
 import { getUser } from "./session.server";
 import { json } from "@remix-run/node";
-import tailwindStylesheetUrl from "./styles/tailwind.css";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Laundry Shower Resource Tracker" }];
 };
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -43,7 +42,6 @@ export default function App() {
         <Outlet />
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );
