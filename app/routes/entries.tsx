@@ -8,6 +8,7 @@ import { Header } from "../components/Header";
 import { Outlet } from "react-router";
 import Table from "../components/Table";
 import { Link, useLoaderData, useNavigation } from "@remix-run/react";
+import { requireUser } from "~/session.server";
 
 type LoaderData = {
   entries: DistributionRecord[];
@@ -15,6 +16,7 @@ type LoaderData = {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  await requireUser(request);
   const url = new URL(request.url);
   const limit = url.searchParams.get("limit");
   const parsedLimit = limit ? parseInt(limit, 10) : 25;
