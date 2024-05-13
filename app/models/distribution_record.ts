@@ -32,7 +32,7 @@ export async function getDistributionRecords({
   const { data } = await supabase
     .from("items_distributed")
     .select()
-    .textSearch("first_name_last_name", searchTerm)
+    .textSearch("first_name_last_name", searchTerm.split(" ").join(" | "))
     .limit(limit);
 
   return data;

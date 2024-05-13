@@ -17,7 +17,7 @@ import { Form, Link, useLoaderData, useNavigation } from "@remix-run/react";
 import { requireUser, requireUserId } from "~/session.server";
 
 type LoaderData = {
-  entries: DistributionRecord[];
+  entries: DistributionRecord[] | null;
   limit: number;
   search: string;
 };
@@ -95,7 +95,7 @@ export default function EntriesPage() {
               </button>
             </div>
           </Form>
-          <Table entries={data.entries} />
+          <Table entries={data.entries ?? []} />
           <Link
             to={`?limit=${data.limit + 25}`}
             className={`${
