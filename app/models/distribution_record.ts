@@ -25,12 +25,14 @@ export async function createDistributionRecord(
 export async function getDistributionRecords({
   first_name,
   last_name,
-}: DistributionRecord) {
+  limit = 25,
+}: Pick<DistributionRecord, "first_name" | "last_name"> & { limit: number }) {
   const { data } = await supabase
     .from("items_distributed")
     .select("*")
     .ilike("first_name", `%${first_name}%`)
-    .ilike("last_name", `%${last_name}%`);
+    .ilike("last_name", `%${last_name}%`)
+    .limit(limit);
 
   return data;
 }
