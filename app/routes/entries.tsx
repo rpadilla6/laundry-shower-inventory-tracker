@@ -30,8 +30,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const parsedLimit = limit ? parseInt(limit, 10) : 25;
   const entries = search
     ? await getDistributionRecords({
-        first_name: search.split(" ")[0],
-        last_name: search.split(" ")?.[1] || "",
+        searchTerm: search,
         limit: parsedLimit,
       })
     : await getLatestDistributionRecords(parsedLimit);

@@ -23,15 +23,16 @@ export async function createDistributionRecord(
 
 // Get all distribution records for a fuzzy match of first_name and last_name combination from supabase.
 export async function getDistributionRecords({
-  first_name,
-  last_name,
+  searchTerm,
   limit = 25,
-}: Pick<DistributionRecord, "first_name" | "last_name"> & { limit: number }) {
+}: {
+  searchTerm: string;
+  limit: number;
+}) {
   const { data } = await supabase
     .from("items_distributed")
-    .select("*")
-    .ilike("first_name", `%${first_name}%`)
-    .ilike("last_name", `%${last_name}%`)
+    .select()
+    .textSearch("first_name_last_name", searchTerm)
     .limit(limit);
 
   return data;
