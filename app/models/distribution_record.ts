@@ -6,7 +6,10 @@ export type DistributionRecord =
 
 // Take a distribution record and add it to supabase, return the distribution record as well.
 export async function createDistributionRecord(
-  record: Omit<DistributionRecord, "id" | "created_at" | "updated_at">,
+  record: Omit<
+    DistributionRecord,
+    "id" | "created_at" | "updated_at" | "first_name_last_name"
+  >,
 ) {
   const { data, error } = await supabase
     .from("items_distributed")
@@ -62,7 +65,10 @@ export async function getDistributionRecordById(id: string) {
 
 // Edit a distribution record in supabase.
 export async function editDistributionRecord(
-  record: Omit<DistributionRecord, "created_at" | "updated_at">,
+  record: Omit<
+    DistributionRecord,
+    "created_at" | "updated_at" | "first_name_last_name"
+  >,
 ) {
   const { data, error } = await supabase
     .from("items_distributed")
